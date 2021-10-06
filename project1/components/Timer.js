@@ -3,27 +3,14 @@ import { StyleSheet, View, Text, Button, Pressable } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import {vibrate} from '../utils'
 
-
-const PauseButton = props => (
-    <Pressable  onPress={props.action} >
-      <FontAwesome name={props.mode} size={60} color="gray"/>
-    </Pressable>
-)
-
-
 export default class Timer extends React.Component {
 
-  counter
-
-  constructor(){
-    super()
-    this.state = {
-      timer: 1500,
-      workMode: true,
-      isPaused: false,
-      workInterval: 1500,
-      breakInterval: 300,
-    }
+  state = {
+    timer: 1500,
+    workMode: true,
+    isPaused: false,
+    workInterval: 1500,
+    breakInterval: 300,
   }
 
   componentDidMount(){
@@ -40,22 +27,22 @@ export default class Timer extends React.Component {
             <Pressable onPress={this.reset} style={styles.button}>
               <FontAwesome name="repeat" size={60} color="gray" />
             </Pressable>
-            <PauseButton style={styles.button} action={this.pauseOrResume} mode={this.state.isPaused ? 'play' : 'pause'}/>
-          </View>
+            <Pressable  onPress={this.pauseOrResume} >
+              <FontAwesome name={this.state.isPaused ? 'play' : 'pause'} size={60} color="gray"/>
+            </Pressable>
+      </View>
         </View>
 
     );
   }
 
   dec = () => {
-
     if(this.state.timer === 1) {
       this.setState(prevState => ({workMode: !prevState.workMode}))
       this.reset()
       vibrate()
       return
     }
-
     if(!this.state.isPaused) this.setState(prevState =>({
       timer: prevState.timer - 1
     }))
@@ -86,8 +73,6 @@ export default class Timer extends React.Component {
 
 }
 
-
-
 const styles = StyleSheet.create({
   text: {
     fontSize: 90,
@@ -111,7 +96,6 @@ const styles = StyleSheet.create({
   button: {
   }
 });
-
 
 function formatTimeMMSS(seconds){
   return new Date(seconds * 1000).toISOString().substr(14, 5);

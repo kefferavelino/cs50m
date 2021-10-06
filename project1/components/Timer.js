@@ -6,7 +6,7 @@ import {vibrate} from '../utils'
 
 const PauseButton = props => (
     <Pressable  onPress={props.action} >
-      <FontAwesome name={props.mode} size={90} color="gray"/>
+      <FontAwesome name={props.mode} size={60} color="gray"/>
     </Pressable>
 )
 
@@ -33,12 +33,12 @@ export default class Timer extends React.Component {
   render() {
     return (
         <View>
-        <Text style={styles.text}>
+        <Text style={[styles.text, this.state.workMode && styles.workTime, !this.state.workMode && styles.restTime]}>
           {formatTimeMMSS(this.state.timer)}
         </Text>
           <View style={styles.buttonsContainer}>
             <Pressable onPress={this.reset} style={styles.button}>
-              <FontAwesome name="repeat" size={90} color="gray" />
+              <FontAwesome name="repeat" size={60} color="gray" />
             </Pressable>
             <PauseButton style={styles.button} action={this.pauseOrResume} mode={this.state.isPaused ? 'play' : 'pause'}/>
           </View>
@@ -65,7 +65,6 @@ export default class Timer extends React.Component {
     resetValue = this.state.workMode ? this.state.workInterval : this.state.breakInterval
     this.setState({
       timer: resetValue,
-      isPaused: true,
     })
   }
 
@@ -92,6 +91,16 @@ export default class Timer extends React.Component {
 const styles = StyleSheet.create({
   text: {
     fontSize: 90,
+    fontWeight: 'bold',
+  },
+  workTime: {
+    color: '#505050',
+  },
+  restTime: {
+    color: '#009000',
+  },
+  pausedtime: {
+
   },
   buttonsContainer: {
     padding: 15,
@@ -100,7 +109,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   button: {
-    flex:1,
   }
 });
 
